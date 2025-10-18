@@ -1,0 +1,33 @@
+{
+  "name": "productive-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Productive.io task management",
+  "type": "module",
+  "bin": {
+    "productive": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "dev": "tsc --watch",
+    "clean": "rm -rf build",
+    "rebuild": "npm run clean && npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": ["build"],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3"
+  },
+  "keywords": [
+    "mcp",
+    "productive",
+    "task-management",
+    "productivity"
+  ],
+  "author": "",
+  "license": "MIT"
+}
