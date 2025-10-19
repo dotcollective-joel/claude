@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "claude-config": "cp claude_desktop_config.json \"$HOME/Library/Application Support/Claude/claude_desktop_config.json\"",
-    "build:mcp:productive": "cd mcp/productive && pnpm build"
+    "build:mcp:productive": "cd mcp/productive && pnpm build",
+    "build:skills": "bash package-skills.sh"
   },
   "repository": {
     "type": "git",
