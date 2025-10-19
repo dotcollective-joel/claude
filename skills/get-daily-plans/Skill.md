@@ -7,7 +7,7 @@ description: "Get tasks from Productive and events from your work calendar to ge
 
 ## Instructions
 
-You should get tasks from Productive using the get-tasks tool. This will grab the tasks that are assigned to me from Productive.io and output the correct data. As well as this, you should also grab my events from my Google Calendar, ensuring you are only grabbing "Work" events (joel@dotapparel.com.au) with events that are not an out of office or focus time.
+You should get tasks from Productive using the get-tasks tool. This will grab the tasks that are assigned to me from Productive.io that are due today or overdue and output the correct data. As well as this, you should also grab my events from my Google Calendar, ensuring you are only grabbing "Work" events (joel@dotapparel.com.au) with events that are not an out of office or focus time.
 
 Then once you have gotten them, generate a Slack message I can post myself, it should be laid out like this:
 
