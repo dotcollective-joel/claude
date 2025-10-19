@@ -1,0 +1,23 @@
+{
+  "name": "claude",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "claude-config": "cp claude_desktop_config.json \"$HOME/Library/Application Support/Claude/claude_desktop_config.json\"",
+    "build:mcp:productive": "cd mcp/productive && pnpm build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotcollective-joel/claude.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dotcollective-joel/claude/issues"
+  },
+  "homepage": "https://github.com/dotcollective-joel/claude#readme"
+}
