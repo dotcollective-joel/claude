@@ -7,9 +7,16 @@ description: "Get tasks from Productive and events from your work calendar to ge
 
 ## Instructions
 
-You should get tasks from Productive using the get-tasks tool. This will grab the tasks that are assigned to me from Productive.io that are due today or overdue and output the correct data. As well as this, you should also grab my events from my Google Calendar, ensuring you are only grabbing "Work" events (joel@dotapparel.com.au) with events that are not an out of office or focus time.
+Follow these steps in order:
 
-Then once you have gotten them, generate a Slack message I can post myself, it should be laid out like this:
+1. **Get tasks**: Call the get-tasks tool with only_due_today_or_overdue=true to retrieve ONLY tasks that are due today or overdue. The tool will automatically filter out future tasks and tasks with no due date.
+2. **Get calendar events**: Fetch events from my Google Calendar (joel@dotapparel.com.au) for today
+3. **Filter calendar events**: EXCLUDE any events that are "out of office" or "focus time" events
+4. **Generate Slack message**: Create a message in the format below using only the filtered tasks and events
+
+The Slack message format should be:
+
+---
 
 Morning! 🤠
 Plans:
@@ -18,9 +25,13 @@ Plans:
   - PROJECT TASK NAME
 - PROJECT NAME
   - PROJECT TASK NAME
-    Meetings:
+
+Meetings:
+
 - Meeting 1
 - Meeting 2
+
+---
 
 Also, ensure it is outputted in rich text, not markdown/plaintext/code
 
