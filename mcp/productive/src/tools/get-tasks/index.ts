@@ -31,6 +31,11 @@ export class GetTasksTool extends BaseTool<GetTasksInput> {
       project_id: input.project_id,
     };
 
-    return handleGetTasks(filters, this.apiClient);
+    return handleGetTasks(
+      filters,
+      this.apiClient,
+      input.format || 'text',
+      input.only_due_today_or_overdue || false
+    );
   }
 }
