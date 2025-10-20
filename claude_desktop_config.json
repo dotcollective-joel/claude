@@ -10,6 +10,10 @@
       "productive.io": {
         "command": "node",
         "args": ["/Users/joelkrause/dev/claude/mcp/productive/build/index.js"]
+      },
+      "firebase": {
+        "command": "npx",
+        "args": ["-y", "firebase-tools@latest", "mcp"]
       }
     },
     "isUsingBuiltInNodeForMcp": true
