@@ -10,6 +10,9 @@ import {
   TaskFilters,
   ProductiveProject,
   ProductiveTaskList,
+  ProductiveSubtask,
+  ProductiveTodo,
+  ProductiveComment,
 } from "../types/productive.types.js";
 
 export class ProductiveApiClientError extends Error {
@@ -135,6 +138,36 @@ export class ProductiveApiClient {
     const response = await this.request<
       ProductiveApiResponse<ProductiveTask[]>
     >(path);
+    return response.data;
+  }
+
+  /**
+   * Get subtasks for a specific task
+   */
+  async getSubtasks(taskId: string): Promise<ProductiveSubtask[]> {
+    const response = await this.request<
+      ProductiveApiResponse<ProductiveSubtask[]>
+    >(`/tasks/${taskId}/subtasks`);
+    return response.data;
+  }
+
+  /**
+   * Get todos (checklist items) for a specific task
+   */
+  async getTodos(taskId: string): Promise<ProductiveTodo[]> {
+    const response = await this.request<
+      ProductiveApiResponse<ProductiveTodo[]>
+    >(`/tasks/${taskId}/todos`);
+    return response.data;
+  }
+
+  /**
+   * Get comments for a specific task
+   */
+  async getComments(taskId: string): Promise<ProductiveComment[]> {
+    const response = await this.request<
+      ProductiveApiResponse<ProductiveComment[]>
+    >(`/tasks/${taskId}/comments`);
     return response.data;
   }
 }

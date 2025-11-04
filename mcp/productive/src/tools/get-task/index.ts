@@ -22,6 +22,6 @@ export class GetTaskTool extends BaseTool<GetTaskInput> {
   }
 
   async execute(input: GetTaskInput): Promise<ToolResponse> {
-    return handleGetTask(input.url, this.apiClient);
+    return handleGetTask(input, this.apiClient);
   }
 }

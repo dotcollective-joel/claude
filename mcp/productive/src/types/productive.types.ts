@@ -84,3 +84,75 @@ export interface ProductiveTaskList {
     updated_at: string;
   };
 }
+
+export interface ProductiveSubtask {
+  id: string;
+  type: string;
+  attributes: {
+    task_number?: number;
+    title: string;
+    description: string | null;
+    due_date: string | null;
+    closed: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships?: {
+    parent_task?: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+    assignee?: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+  };
+}
+
+export interface ProductiveTodo {
+  id: string;
+  type: string;
+  attributes: {
+    content: string;
+    completed: boolean;
+    position: number;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships?: {
+    task?: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+  };
+}
+
+export interface ProductiveComment {
+  id: string;
+  type: string;
+  attributes: {
+    content: string;
+    created_at: string;
+    updated_at: string;
+  };
+  relationships?: {
+    task?: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+    person?: {
+      data: {
+        id: string;
+        type: string;
+      } | null;
+    };
+  };
+}
