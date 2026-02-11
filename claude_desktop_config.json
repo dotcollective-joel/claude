@@ -14,6 +14,15 @@
       "firebase": {
         "command": "npx",
         "args": ["-y", "firebase-tools@latest", "mcp"]
+      },
+      "weather": {
+        "command": "node",
+        "args": ["/Users/joelkrause/dev/claude/mcp/weather/build/index.js"],
+        "env": {
+          "WEATHER_LATITUDE": "-37.8136",
+          "WEATHER_LONGITUDE": "144.9631",
+          "WEATHER_TIMEZONE": "Australia/Melbourne"
+        }
       }
     },
     "isUsingBuiltInNodeForMcp": true

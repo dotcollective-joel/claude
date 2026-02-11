@@ -9,16 +9,17 @@ description: "Get tasks from Productive and events from your work calendar to ge
 
 Follow these steps in order:
 
-1. **Get tasks**: Call the get-tasks tool with only_due_today_or_overdue=true to retrieve ONLY tasks that are due today or overdue. The tool will automatically filter out future tasks and tasks with no due date.
-2. **Get calendar events**: Fetch events from my Google Calendar (joel@dotapparel.com.au) for today
-3. **Filter calendar events**: EXCLUDE any events that are "out of office" or "focus time" events
-4. **Generate Slack message**: Create a message in the format below using only the filtered tasks and events
+1. **Get weather emoji**: Call the get_weather tool with format="emoji_only" to get the appropriate emoji for today's weather
+2. **Get tasks**: Call the get-tasks tool with only_due_today_or_overdue=true to retrieve ONLY tasks that are due today or overdue. The tool will automatically filter out future tasks and tasks with no due date.
+3. **Get calendar events**: Fetch events from my Google Calendar (joel@dotapparel.com.au) for today
+4. **Filter calendar events**: EXCLUDE any events that are "out of office" or "focus time" events or events that declined
+5. **Generate Slack message**: Create a message in the format below using the weather emoji and only the filtered tasks and events
 
 The Slack message format should be:
 
 ---
 
-Morning! 🤠
+Morning! {WEATHER_EMOJI}
 Plans:
 
 - PROJECT NAME
@@ -38,7 +39,7 @@ Also, ensure it is outputted in rich text, not markdown/plaintext/code
 ## Example
 
 - Input: "What are my daily plans?"
-- Output: "Morning! :face_with_cowboy_hat:
+- Output: "Morning! ☀️
   Plans:
 - Price Attack Purchase Orders
 - Olga Berg Staging Environment Setup
