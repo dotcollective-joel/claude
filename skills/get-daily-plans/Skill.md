@@ -41,9 +41,12 @@ Also, ensure it is outputted in rich text, not markdown/plaintext/code
 - Input: "What are my daily plans?"
 - Output: "Morning! ☀️
   Plans:
-- Price Attack Purchase Orders
-- Olga Berg Staging Environment Setup
-- RB Sellars/DAR Gift Voucher Discount Split Issue
+- Price Attack
+  - Purchase Orders
+- Olga Berg
+  - Staging Environment Setup
+- RB Sellars/DAR
+  - Gift Voucher Discount Split Issue
   Meetings:
 - TroubleShoot Gft Card Issue - Waurn Ponds
 - WIP - RB Sellars
