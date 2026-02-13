@@ -38,7 +38,7 @@ for skill_path in "$SKILLS_DIR"/*; do
   mkdir -p "$package_dir"
 
   # Copy Skill.md
-  cp "$skill_path/Skill.md" "$package_dir/"
+  cp "$skill_path/SKILL.md" "$package_dir/"
 
   # Copy resources directory if it exists
   if [ -d "$skill_path/resources" ]; then
