@@ -13,7 +13,8 @@ Follow these steps in order:
 2. **Get tasks**: Call the get-tasks tool with only_due_today_or_overdue=true to retrieve ONLY tasks that are due today or overdue. The tool will automatically filter out future tasks and tasks with no due date.
 3. **Get calendar events**: Fetch events from my Google Calendar (joel@dotapparel.com.au) for today
 4. **Filter calendar events**: EXCLUDE any events that are "out of office" or "focus time" events or events that declined
-5. **Generate Slack message**: Create a message in the format below using the weather emoji and only the filtered tasks and events
+5. **Generate Slack message**: Create a message in the format below using the weather emoji and only the filtered tasks and events. Events DO NOT need times on them!
+6. **Send the message via Slack**: Send the message to the `#squad-connect` channel
 
 The Slack message format should be:
 
