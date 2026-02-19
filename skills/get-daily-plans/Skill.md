@@ -14,7 +14,8 @@ Follow these steps in order:
 3. **Get calendar events**: Fetch events from my Google Calendar (joel@dotapparel.com.au) for today
 4. **Filter calendar events**: EXCLUDE any events that are "out of office" or "focus time" events or events that declined
 5. **Generate Slack message**: Create a message in the format below using the weather emoji and only the filtered tasks and events. Events DO NOT need times on them!
-6. **Send the message via Slack**: Send the message to the `#squad-connect` channel
+6. Before you send the message, let me review and edit and then approve to be sent!
+7. **Send the message via Slack**: Send the message to the `#squad-connect` channel and `#squad-product` channel. They are both private channels
 
 The Slack message format should be:
 
