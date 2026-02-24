@@ -290,7 +290,105 @@ export class ProductiveApiClient {
     return response.data;
   }
 
+  /**
+   * Create a task
+   */
+  async createTask(body: Record<string, unknown>): Promise<ProductiveTask> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTask>>(
+      "/tasks",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a task
+   */
+  async updateTask(taskId: string, body: Record<string, unknown>): Promise<ProductiveTask> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTask>>(
+      `/tasks/${taskId}`,
+      { method: "PATCH", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete a task
+   */
+  async deleteTask(taskId: string): Promise<void> {
+    await this.request<Record<string, never>>(
+      `/tasks/${taskId}`,
+      { method: "DELETE" }
+    );
+  }
+
+  /**
+   * Create a todo (checklist item) on a task
+   */
+  async createTodo(body: Record<string, unknown>): Promise<ProductiveTodo> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTodo>>(
+      "/todos",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a todo (checklist item)
+   */
+  async updateTodo(todoId: string, body: Record<string, unknown>): Promise<ProductiveTodo> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTodo>>(
+      `/todos/${todoId}`,
+      { method: "PATCH", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create a comment
+   */
+  async createComment(body: Record<string, unknown>): Promise<ProductiveComment> {
+    const response = await this.request<ProductiveApiResponse<ProductiveComment>>(
+      "/comments",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
   // ─── Project Methods ───────────────────────────────────────────────────
+
+  /**
+   * Create a project
+   */
+  async createProject(body: Record<string, unknown>): Promise<ProductiveProject> {
+    const response = await this.request<ProductiveApiResponse<ProductiveProject>>(
+      "/projects",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a project
+   */
+  async updateProject(projectId: string, body: Record<string, unknown>): Promise<ProductiveProject> {
+    const response = await this.request<ProductiveApiResponse<ProductiveProject>>(
+      `/projects/${projectId}`,
+      { method: "PATCH", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create a task list
+   */
+  async createTaskList(body: Record<string, unknown>): Promise<ProductiveTaskList> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTaskList>>(
+      "/task_lists",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
 
   /**
    * Get projects with optional filters
