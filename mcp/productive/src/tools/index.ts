@@ -23,6 +23,14 @@ import { customFieldTools } from "./custom-fields/index.js";
 import { serviceTypeTools } from "./service-types/index.js";
 import { dashboardTools } from "./dashboards/index.js";
 import { notificationTools } from "./notifications/index.js";
+import { webhookTools } from "./webhooks/index.js";
+import { discussionTools } from "./discussions/index.js";
+import { emailTools } from "./emails/index.js";
+import { contractTools } from "./contracts/index.js";
+import { paymentTools } from "./payments/index.js";
+import { purchaseOrderTools } from "./purchase-orders/index.js";
+import { billTools } from "./bills/index.js";
+import { attachmentTools } from "./attachments/index.js";
 
 /**
  * Get all available tools from all groups
@@ -49,6 +57,14 @@ export function getAllTools(): Tool[] {
     ...serviceTypeTools,
     ...dashboardTools,
     ...notificationTools,
+    ...webhookTools,
+    ...discussionTools,
+    ...emailTools,
+    ...contractTools,
+    ...paymentTools,
+    ...purchaseOrderTools,
+    ...billTools,
+    ...attachmentTools,
   ];
 }
 

@@ -5,7 +5,9 @@
 
 import { Tool } from "../../types/tool.types.js";
 import { ListBookingsTool } from "./list-bookings/index.js";
+import { CreateBookingTool } from "./create-booking/index.js";
 
 export const bookingTools: Tool[] = [
   new ListBookingsTool(),
+  new CreateBookingTool(),
 ];

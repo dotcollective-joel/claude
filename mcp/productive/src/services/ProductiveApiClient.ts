@@ -40,6 +40,14 @@ import type { ProductiveServiceType } from "../types/service.types.js";
 import type { ProductiveCustomField, CustomFieldFilters, ProductiveCustomFieldOption, CustomFieldOptionFilters } from "../types/custom-field.types.js";
 import type { ProductiveDashboard, DashboardFilters } from "../types/dashboard.types.js";
 import type { ProductiveNotification, NotificationFilters } from "../types/notification.types.js";
+import type { ProductiveWebhook, WebhookFilters } from "../types/webhook.types.js";
+import type { ProductiveDiscussion, DiscussionFilters } from "../types/discussion.types.js";
+import type { ProductiveEmail, EmailFilters } from "../types/email.types.js";
+import type { ProductiveContract, ContractFilters } from "../types/contract.types.js";
+import type { ProductivePayment, PaymentFilters } from "../types/payment.types.js";
+import type { ProductivePurchaseOrder, PurchaseOrderFilters } from "../types/purchase-order.types.js";
+import type { ProductiveBill, BillFilters } from "../types/bill.types.js";
+import type { ProductiveAttachment } from "../types/attachment.types.js";
 import type {
   ReportFilters,
   ProductiveReport,
@@ -841,6 +849,153 @@ export class ProductiveApiClient {
 
   async getPaymentReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<PaymentReportAttributes>>> {
     return this.requestPaginated<ProductiveReport<PaymentReportAttributes>>("/reports/payment_reports", this.buildReportParams(filters));
+  }
+
+  // ─── Webhook Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get webhooks with optional filters
+   */
+  async getWebhooks(filters?: WebhookFilters): Promise<PaginatedResult<ProductiveWebhook>> {
+    const params = this.buildFilterParams(filters, ["state_id", "event_id", "type_id"]);
+    return this.requestPaginated<ProductiveWebhook>("/webhooks", params);
+  }
+
+  /**
+   * Create a webhook
+   */
+  async createWebhook(body: Record<string, unknown>): Promise<ProductiveWebhook> {
+    const response = await this.request<ProductiveApiResponse<ProductiveWebhook>>(
+      "/webhooks",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete a webhook
+   */
+  async deleteWebhook(webhookId: string): Promise<void> {
+    await this.request<Record<string, never>>(
+      `/webhooks/${webhookId}`,
+      { method: "DELETE" }
+    );
+  }
+
+  // ─── Discussion Methods ────────────────────────────────────────────────
+
+  /**
+   * Get discussions with optional filters
+   */
+  async getDiscussions(filters?: DiscussionFilters): Promise<PaginatedResult<ProductiveDiscussion>> {
+    const params = this.buildFilterParams(filters, ["person_id", "task_id", "deal_id", "project_id"]);
+    params["include"] = "person,task";
+    return this.requestPaginated<ProductiveDiscussion>("/discussions", params);
+  }
+
+  /**
+   * Create a discussion
+   */
+  async createDiscussion(body: Record<string, unknown>): Promise<ProductiveDiscussion> {
+    const response = await this.request<ProductiveApiResponse<ProductiveDiscussion>>(
+      "/discussions",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  // ─── Email Methods ─────────────────────────────────────────────────────
+
+  /**
+   * Get emails with optional filters
+   */
+  async getEmails(filters?: EmailFilters): Promise<PaginatedResult<ProductiveEmail>> {
+    const params = this.buildFilterParams(filters, ["deal_id"]);
+    params["include"] = "deal";
+    return this.requestPaginated<ProductiveEmail>("/emails", params);
+  }
+
+  // ─── Contract Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get contracts with optional filters
+   */
+  async getContracts(filters?: ContractFilters): Promise<PaginatedResult<ProductiveContract>> {
+    const params = this.buildFilterParams(filters, ["company_id", "deal_id", "responsible_id", "query"]);
+    params["include"] = "company";
+    return this.requestPaginated<ProductiveContract>("/contracts", params);
+  }
+
+  // ─── Payment Methods ───────────────────────────────────────────────────
+
+  /**
+   * Get payments with optional filters
+   */
+  async getPayments(filters?: PaymentFilters): Promise<PaginatedResult<ProductivePayment>> {
+    const params = this.buildFilterParams(filters, ["company_id", "deal_id", "invoice_id"]);
+    params["include"] = "company,invoice";
+    return this.requestPaginated<ProductivePayment>("/payments", params);
+  }
+
+  // ─── Purchase Order Methods ────────────────────────────────────────────
+
+  /**
+   * Get purchase orders with optional filters
+   */
+  async getPurchaseOrders(filters?: PurchaseOrderFilters): Promise<PaginatedResult<ProductivePurchaseOrder>> {
+    const params = this.buildFilterParams(filters, ["company_id", "deal_id", "status", "query"]);
+    params["include"] = "company";
+    return this.requestPaginated<ProductivePurchaseOrder>("/purchase_orders", params);
+  }
+
+  // ─── Bill Methods ──────────────────────────────────────────────────────
+
+  /**
+   * Get bills with optional filters
+   */
+  async getBills(filters?: BillFilters): Promise<PaginatedResult<ProductiveBill>> {
+    const params = this.buildFilterParams(filters, ["company_id", "deal_id", "status", "query"]);
+    params["include"] = "company";
+    return this.requestPaginated<ProductiveBill>("/bills", params);
+  }
+
+  // ─── Expense Update Methods ────────────────────────────────────────────
+
+  /**
+   * Update an expense
+   */
+  async updateExpense(expenseId: string, body: Record<string, unknown>): Promise<ProductiveExpense> {
+    const response = await this.request<ProductiveApiResponse<ProductiveExpense>>(
+      `/expenses/${expenseId}`,
+      { method: "PATCH", body }
+    );
+    return response.data;
+  }
+
+  // ─── Booking Create Methods ────────────────────────────────────────────
+
+  /**
+   * Create a booking
+   */
+  async createBooking(body: Record<string, unknown>): Promise<ProductiveBooking> {
+    const response = await this.request<ProductiveApiResponse<ProductiveBooking>>(
+      "/bookings",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  // ─── Attachment Methods ────────────────────────────────────────────────
+
+  /**
+   * Create an attachment
+   */
+  async createAttachment(body: Record<string, unknown>): Promise<ProductiveAttachment> {
+    const response = await this.request<ProductiveApiResponse<ProductiveAttachment>>(
+      "/attachments",
+      { method: "POST", body }
+    );
+    return response.data;
   }
 
   // ─── Private Helpers ──────────────────────────────────────────────────

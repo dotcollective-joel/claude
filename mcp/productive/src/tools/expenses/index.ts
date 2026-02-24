@@ -5,7 +5,9 @@
 
 import { Tool } from "../../types/tool.types.js";
 import { ListExpensesTool } from "./list-expenses/index.js";
+import { ApproveExpenseTool } from "./approve-expense/index.js";
 
 export const expenseTools: Tool[] = [
   new ListExpensesTool(),
+  new ApproveExpenseTool(),
 ];
