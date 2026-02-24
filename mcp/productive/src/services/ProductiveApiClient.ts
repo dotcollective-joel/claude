@@ -34,6 +34,20 @@ import type { ProductiveDeal, DealFilters } from "../types/deal.types.js";
 import type { ProductiveInvoice, InvoiceFilters } from "../types/invoice.types.js";
 import type { ProductiveService, ServiceFilters } from "../types/service.types.js";
 import type { ProductiveExpense, ExpenseFilters } from "../types/expense.types.js";
+import type {
+  ReportFilters,
+  ProductiveReport,
+  TimeEntryReportAttributes,
+  BudgetReportAttributes,
+  ProjectReportAttributes,
+  TaskReportAttributes,
+  DealReportAttributes,
+  CompanyReportAttributes,
+  BookingReportAttributes,
+  ExpenseReportAttributes,
+  InvoiceReportAttributes,
+  PaymentReportAttributes,
+} from "../types/report.types.js";
 
 const DEFAULT_PAGE_SIZE = 200;
 const MAX_PAGES = 10;
@@ -649,6 +663,63 @@ export class ProductiveApiClient {
     ]);
     params["include"] = "person,service";
     return this.requestPaginated<ProductiveExpense>("/expenses", params);
+  }
+
+  // ─── Report Methods ─────────────────────────────────────────────────
+
+  /**
+   * Build report filter params (reports use `group` as a top-level param, not filter[group])
+   */
+  private buildReportParams(filters?: ReportFilters): Record<string, string | number | boolean | string[] | undefined> {
+    const params = this.buildFilterParams(filters, [
+      "after", "before", "company_id", "project_id", "person_id",
+      "budget_id", "deal_id", "service_id", "subsidiary_id",
+    ]);
+    // `group` is a top-level query param for reports, not a filter
+    if (filters?.group) {
+      params["group"] = filters.group;
+    }
+    return params;
+  }
+
+  async getTimeEntryReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<TimeEntryReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<TimeEntryReportAttributes>>("/reports/time_entry_reports", this.buildReportParams(filters));
+  }
+
+  async getBudgetReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<BudgetReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<BudgetReportAttributes>>("/reports/budget_reports", this.buildReportParams(filters));
+  }
+
+  async getProjectReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<ProjectReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<ProjectReportAttributes>>("/reports/project_reports", this.buildReportParams(filters));
+  }
+
+  async getTaskReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<TaskReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<TaskReportAttributes>>("/reports/task_reports", this.buildReportParams(filters));
+  }
+
+  async getDealReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<DealReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<DealReportAttributes>>("/reports/deal_reports", this.buildReportParams(filters));
+  }
+
+  async getCompanyReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<CompanyReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<CompanyReportAttributes>>("/reports/company_reports", this.buildReportParams(filters));
+  }
+
+  async getBookingReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<BookingReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<BookingReportAttributes>>("/reports/booking_reports", this.buildReportParams(filters));
+  }
+
+  async getExpenseReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<ExpenseReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<ExpenseReportAttributes>>("/reports/expense_reports", this.buildReportParams(filters));
+  }
+
+  async getInvoiceReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<InvoiceReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<InvoiceReportAttributes>>("/reports/invoice_reports", this.buildReportParams(filters));
+  }
+
+  async getPaymentReports(filters?: ReportFilters): Promise<PaginatedResult<ProductiveReport<PaymentReportAttributes>>> {
+    return this.requestPaginated<ProductiveReport<PaymentReportAttributes>>("/reports/payment_reports", this.buildReportParams(filters));
   }
 
   // ─── Private Helpers ──────────────────────────────────────────────────

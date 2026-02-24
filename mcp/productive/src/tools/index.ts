@@ -16,6 +16,7 @@ import { dealTools } from "./deals/index.js";
 import { invoiceTools } from "./invoices/index.js";
 import { serviceTools } from "./services/index.js";
 import { expenseTools } from "./expenses/index.js";
+import { reportTools } from "./reports/index.js";
 
 /**
  * Get all available tools from all groups
@@ -35,6 +36,7 @@ export function getAllTools(): Tool[] {
     ...invoiceTools,
     ...serviceTools,
     ...expenseTools,
+    ...reportTools,
   ];
 }
 

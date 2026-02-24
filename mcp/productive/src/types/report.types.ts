@@ -87,6 +87,49 @@ export interface BookingReportAttributes {
   project_name?: string;
 }
 
+export interface CompanyReportAttributes {
+  count: number;
+  company_name?: string;
+  total_revenue: string | null;
+  total_cost: string | null;
+  total_profit: string | null;
+  date?: string;
+}
+
+export interface ExpenseReportAttributes {
+  currency: string | null;
+  count: number;
+  total_amount: string | null;
+  total_billable_amount: string | null;
+  person_name?: string;
+  project_name?: string;
+  company_name?: string;
+  service_name?: string;
+  date?: string;
+}
+
+export interface InvoiceReportAttributes {
+  currency: string | null;
+  count: number;
+  total_amount: string | null;
+  total_amount_with_tax: string | null;
+  total_amount_paid: string | null;
+  total_amount_unpaid: string | null;
+  company_name?: string;
+  invoice_state?: string;
+  payment_status?: string;
+  date?: string;
+}
+
+export interface PaymentReportAttributes {
+  currency: string | null;
+  count: number;
+  total_amount: string | null;
+  company_name?: string;
+  payment_type?: string;
+  date?: string;
+}
+
 export interface ProductiveReport<T = Record<string, unknown>> {
   id: string;
   type: string;
