@@ -34,6 +34,12 @@ import type { ProductiveDeal, DealFilters } from "../types/deal.types.js";
 import type { ProductiveInvoice, InvoiceFilters } from "../types/invoice.types.js";
 import type { ProductiveService, ServiceFilters } from "../types/service.types.js";
 import type { ProductiveExpense, ExpenseFilters } from "../types/expense.types.js";
+import type { ProductiveTeam, TeamFilters, ProductiveMembership, MembershipFilters } from "../types/team.types.js";
+import type { ProductiveWorkflow, WorkflowFilters, ProductiveWorkflowStatus, WorkflowStatusFilters } from "../types/workflow.types.js";
+import type { ProductiveServiceType } from "../types/service.types.js";
+import type { ProductiveCustomField, CustomFieldFilters, ProductiveCustomFieldOption, CustomFieldOptionFilters } from "../types/custom-field.types.js";
+import type { ProductiveDashboard, DashboardFilters } from "../types/dashboard.types.js";
+import type { ProductiveNotification, NotificationFilters } from "../types/notification.types.js";
 import type {
   ReportFilters,
   ProductiveReport,
@@ -663,6 +669,121 @@ export class ProductiveApiClient {
     ]);
     params["include"] = "person,service";
     return this.requestPaginated<ProductiveExpense>("/expenses", params);
+  }
+
+  // ─── Team Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get teams with optional filters
+   */
+  async getTeams(filters?: TeamFilters): Promise<PaginatedResult<ProductiveTeam>> {
+    const params = this.buildFilterParams(filters, ["name"]);
+    return this.requestPaginated<ProductiveTeam>("/teams", params);
+  }
+
+  /**
+   * Get a team by ID with memberships
+   */
+  async getTeam(teamId: string): Promise<JsonApiDocument<ProductiveTeam>> {
+    return this.request<JsonApiDocument<ProductiveTeam>>(
+      `/teams/${teamId}`,
+      { params: { include: "memberships" } }
+    );
+  }
+
+  /**
+   * Get memberships with optional filters
+   */
+  async getMemberships(filters?: MembershipFilters): Promise<PaginatedResult<ProductiveMembership>> {
+    const params = this.buildFilterParams(filters, ["team_id", "person_id"]);
+    params["include"] = "person,team";
+    return this.requestPaginated<ProductiveMembership>("/memberships", params);
+  }
+
+  // ─── Workflow Methods ─────────────────────────────────────────────────
+
+  /**
+   * Get workflows with optional filters
+   */
+  async getWorkflows(filters?: WorkflowFilters): Promise<PaginatedResult<ProductiveWorkflow>> {
+    const params = this.buildFilterParams(filters, ["name", "archived"]);
+    return this.requestPaginated<ProductiveWorkflow>("/workflows", params);
+  }
+
+  /**
+   * Get a workflow by ID with statuses
+   */
+  async getWorkflow(workflowId: string): Promise<JsonApiDocument<ProductiveWorkflow>> {
+    return this.request<JsonApiDocument<ProductiveWorkflow>>(
+      `/workflows/${workflowId}`,
+      { params: { include: "workflow_statuses" } }
+    );
+  }
+
+  /**
+   * Get workflow statuses with optional filters
+   */
+  async getWorkflowStatuses(filters?: WorkflowStatusFilters): Promise<PaginatedResult<ProductiveWorkflowStatus>> {
+    const params = this.buildFilterParams(filters, ["workflow_id"]);
+    return this.requestPaginated<ProductiveWorkflowStatus>("/workflow_statuses", params);
+  }
+
+  // ─── Custom Field Methods ─────────────────────────────────────────────
+
+  /**
+   * Get custom fields
+   */
+  async getCustomFields(filters?: CustomFieldFilters): Promise<PaginatedResult<ProductiveCustomField>> {
+    const params = this.buildFilterParams(filters, []);
+    return this.requestPaginated<ProductiveCustomField>("/custom_fields", params);
+  }
+
+  /**
+   * Get a custom field by ID with options
+   */
+  async getCustomField(customFieldId: string): Promise<JsonApiDocument<ProductiveCustomField>> {
+    return this.request<JsonApiDocument<ProductiveCustomField>>(
+      `/custom_fields/${customFieldId}`,
+      { params: { include: "custom_field_options" } }
+    );
+  }
+
+  /**
+   * Get custom field options with optional filters
+   */
+  async getCustomFieldOptions(filters?: CustomFieldOptionFilters): Promise<PaginatedResult<ProductiveCustomFieldOption>> {
+    const params = this.buildFilterParams(filters, ["custom_field_id"]);
+    return this.requestPaginated<ProductiveCustomFieldOption>("/custom_field_options", params);
+  }
+
+  // ─── Service Type Methods ─────────────────────────────────────────────
+
+  /**
+   * Get service types
+   */
+  async getServiceTypes(): Promise<PaginatedResult<ProductiveServiceType>> {
+    return this.requestPaginated<ProductiveServiceType>("/service_types", {});
+  }
+
+  // ─── Dashboard Methods ─────────────────────────────────────────────────
+
+  /**
+   * Get dashboards
+   */
+  async getDashboards(filters?: DashboardFilters): Promise<PaginatedResult<ProductiveDashboard>> {
+    const params = this.buildFilterParams(filters, []);
+    return this.requestPaginated<ProductiveDashboard>("/dashboards", params);
+  }
+
+  // ─── Notification Methods ──────────────────────────────────────────────
+
+  /**
+   * Get notifications
+   */
+  async getNotifications(filters?: NotificationFilters): Promise<PaginatedResult<ProductiveNotification>> {
+    const params = this.buildFilterParams(filters, []);
+    params["include"] = "person,activity";
+    return this.requestPaginated<ProductiveNotification>("/notifications", params);
   }
 
   // ─── Report Methods ─────────────────────────────────────────────────

@@ -17,6 +17,12 @@ import { invoiceTools } from "./invoices/index.js";
 import { serviceTools } from "./services/index.js";
 import { expenseTools } from "./expenses/index.js";
 import { reportTools } from "./reports/index.js";
+import { teamTools } from "./teams/index.js";
+import { workflowTools } from "./workflows/index.js";
+import { customFieldTools } from "./custom-fields/index.js";
+import { serviceTypeTools } from "./service-types/index.js";
+import { dashboardTools } from "./dashboards/index.js";
+import { notificationTools } from "./notifications/index.js";
 
 /**
  * Get all available tools from all groups
@@ -37,6 +43,12 @@ export function getAllTools(): Tool[] {
     ...serviceTools,
     ...expenseTools,
     ...reportTools,
+    ...teamTools,
+    ...workflowTools,
+    ...customFieldTools,
+    ...serviceTypeTools,
+    ...dashboardTools,
+    ...notificationTools,
   ];
 }
 
