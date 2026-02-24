@@ -5,6 +5,11 @@
 
 import { Tool } from "../types/tool.types.js";
 import { taskTools } from "./tasks/index.js";
+import { projectTools } from "./projects/index.js";
+import { boardTools } from "./boards/index.js";
+import { peopleTools } from "./people/index.js";
+import { companyTools } from "./companies/index.js";
+import { activityTools } from "./activities/index.js";
 
 /**
  * Get all available tools from all groups
@@ -13,6 +18,11 @@ import { taskTools } from "./tasks/index.js";
 export function getAllTools(): Tool[] {
   return [
     ...taskTools,
+    ...projectTools,
+    ...boardTools,
+    ...peopleTools,
+    ...companyTools,
+    ...activityTools,
   ];
 }
 

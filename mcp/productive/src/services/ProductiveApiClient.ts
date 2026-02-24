@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RequestOptions,
   JsonApiDocument,
+  JsonApiIdentifiable,
   JsonApiResource,
   PaginatedResult,
   PaginationMeta,
@@ -23,6 +24,10 @@ import {
   ProductiveTodo,
   ProductiveComment,
 } from "../types/productive.types.js";
+import type { ProjectFilters, ProductiveBoard, BoardFilters } from "../types/project.types.js";
+import type { ProductivePerson, PeopleFilters } from "../types/person.types.js";
+import type { ProductiveCompany, CompanyFilters } from "../types/company.types.js";
+import type { ProductiveActivity, ActivityFilters } from "../types/activity.types.js";
 
 const DEFAULT_PAGE_SIZE = 200;
 const MAX_PAGES = 10;
@@ -138,7 +143,7 @@ export class ProductiveApiClient {
   /**
    * Make a paginated GET request, aggregating results across pages
    */
-  async requestPaginated<T extends JsonApiResource>(
+  async requestPaginated<T extends JsonApiIdentifiable>(
     path: string,
     params?: Record<string, string | number | boolean | string[] | undefined>,
     maxPages: number = MAX_PAGES
@@ -279,6 +284,112 @@ export class ProductiveApiClient {
     return response.data;
   }
 
+  // ─── Project Methods ───────────────────────────────────────────────────
+
+  /**
+   * Get projects with optional filters
+   */
+  async getProjects(filters?: ProjectFilters): Promise<PaginatedResult<ProductiveProject>> {
+    const params = this.buildFilterParams(filters, [
+      "company_id", "responsible_id", "person_id", "status",
+      "project_type", "query", "tags",
+    ]);
+    params["include"] = "company,project_manager";
+    return this.requestPaginated<ProductiveProject>("/projects", params);
+  }
+
+  // ─── Board Methods ────────────────────────────────────────────────────
+
+  /**
+   * Get a board by ID
+   */
+  async getBoard(boardId: string): Promise<ProductiveBoard> {
+    const response = await this.request<ProductiveApiResponse<ProductiveBoard>>(
+      `/boards/${boardId}`
+    );
+    return response.data;
+  }
+
+  /**
+   * Get boards with optional filters
+   */
+  async getBoards(filters?: BoardFilters): Promise<PaginatedResult<ProductiveBoard>> {
+    const params = this.buildFilterParams(filters, ["project_id", "status"]);
+    return this.requestPaginated<ProductiveBoard>("/boards", params);
+  }
+
+  // ─── Task List Methods ────────────────────────────────────────────────
+
+  /**
+   * Get task lists with optional filters
+   */
+  async getTaskLists(filters?: { project_id?: string; board_id?: string }): Promise<PaginatedResult<ProductiveTaskList>> {
+    const params = this.buildFilterParams(filters, ["project_id", "board_id"]);
+    params["include"] = "project,board";
+    return this.requestPaginated<ProductiveTaskList>("/task_lists", params);
+  }
+
+  // ─── People Methods ───────────────────────────────────────────────────
+
+  /**
+   * Get a person by ID
+   */
+  async getPerson(personId: string): Promise<ProductivePerson> {
+    const response = await this.request<ProductiveApiResponse<ProductivePerson>>(
+      `/people/${personId}`
+    );
+    return response.data;
+  }
+
+  /**
+   * Get people with optional filters
+   */
+  async getPeople(filters?: PeopleFilters): Promise<PaginatedResult<ProductivePerson>> {
+    const params = this.buildFilterParams(filters, [
+      "email", "status", "person_type", "role_id", "company_id",
+      "team", "query", "tags", "project_id", "manager_id",
+    ]);
+    params["include"] = "company";
+    return this.requestPaginated<ProductivePerson>("/people", params);
+  }
+
+  // ─── Company Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get a company by ID
+   */
+  async getCompany(companyId: string): Promise<ProductiveCompany> {
+    const response = await this.request<ProductiveApiResponse<ProductiveCompany>>(
+      `/companies/${companyId}`
+    );
+    return response.data;
+  }
+
+  /**
+   * Get companies with optional filters
+   */
+  async getCompanies(filters?: CompanyFilters): Promise<PaginatedResult<ProductiveCompany>> {
+    const params = this.buildFilterParams(filters, [
+      "name", "company_code", "status", "subsidiary_id",
+      "project_id", "tags", "query",
+    ]);
+    return this.requestPaginated<ProductiveCompany>("/companies", params);
+  }
+
+  // ─── Activity Methods ─────────────────────────────────────────────────
+
+  /**
+   * Get activities (audit log) with optional filters
+   */
+  async getActivities(filters?: ActivityFilters): Promise<PaginatedResult<ProductiveActivity>> {
+    const params = this.buildFilterParams(filters, [
+      "person_id", "project_id", "task_id", "deal_id",
+      "company_id", "after", "before",
+    ]);
+    params["include"] = "person";
+    return this.requestPaginated<ProductiveActivity>("/activities", params);
+  }
+
   // ─── Private Helpers ──────────────────────────────────────────────────
 
   /**
@@ -303,6 +414,32 @@ export class ProductiveApiClient {
 
     const query = searchParams.toString();
     return query ? `${base}?${query}` : base;
+  }
+
+  /**
+   * Build filter params from a filters object, mapping known keys to filter[key] format
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private buildFilterParams<T extends Record<string, any>>(
+    filters: T | undefined,
+    filterKeys: string[]
+  ): Record<string, string | number | boolean | string[] | undefined> {
+    const params: Record<string, string | number | boolean | string[] | undefined> = {};
+    if (!filters) return params;
+
+    for (const key of filterKeys) {
+      const value = filters[key];
+      if (value !== undefined && value !== null) {
+        params[`filter[${key}]`] = value as string | number | boolean;
+      }
+    }
+
+    // Pass through sort and pagination if present
+    if (filters.sort) {
+      params["sort"] = filters.sort as string;
+    }
+
+    return params;
   }
 
   private sleep(ms: number): Promise<void> {

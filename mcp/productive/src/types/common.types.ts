@@ -55,6 +55,15 @@ export interface BaseFilters {
   sort?: string;
 }
 
+/**
+ * Minimal constraint for resources used in paginated requests.
+ * Looser than JsonApiResource to allow concrete typed interfaces.
+ */
+export interface JsonApiIdentifiable {
+  id: string;
+  type: string;
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   included: JsonApiResource[];
