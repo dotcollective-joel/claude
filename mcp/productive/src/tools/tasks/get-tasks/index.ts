@@ -3,11 +3,11 @@
  * Retrieves multiple tasks from Productive.io with optional filters
  */
 
-import { BaseTool } from "../base/BaseTool.js";
-import { ProductiveApiClient } from "../../services/ProductiveApiClient.js";
-import { ToolResponse } from "../../types/tool.types.js";
-import { getConfig } from "../../config/index.js";
-import { TaskStatus } from "../../types/productive.types.js";
+import { BaseTool } from "../../base/BaseTool.js";
+import { ProductiveApiClient } from "../../../services/ProductiveApiClient.js";
+import { ToolResponse } from "../../../types/tool.types.js";
+import { getConfig } from "../../../config/index.js";
+import { TaskStatus } from "../../../types/productive.types.js";
 import { GetTasksSchema, GetTasksInput } from "./schema.js";
 import { handleGetTasks } from "./handler.js";
 

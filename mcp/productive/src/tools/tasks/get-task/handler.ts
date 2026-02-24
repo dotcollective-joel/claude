@@ -2,31 +2,17 @@
  * Get Task Tool Handler
  */
 
-import { ProductiveApiClient } from "../../services/ProductiveApiClient.js";
-import { ToolResponse } from "../../types/tool.types.js";
+import { ProductiveApiClient } from "../../../services/ProductiveApiClient.js";
+import { ToolResponse } from "../../../types/tool.types.js";
 import { GetTaskInput } from "./schema.js";
-
-/**
- * Extract task ID from a Productive.io task URL
- * @param url - Full task URL from Productive.io
- * @returns Task ID or null if invalid format
- */
-function extractTaskId(url: string): string | null {
-  if (!url) {
-    return null;
-  }
-
-  // Match pattern: https://app.productive.io/{org-id}/tasks/{task-id}
-  const match = url.match(/\/tasks\/(\d+)/);
-  return match ? match[1] : null;
-}
+import { resolveId } from "../../../utils/url.js";
 
 export async function handleGetTask(
   input: GetTaskInput,
   apiClient: ProductiveApiClient
 ): Promise<ToolResponse> {
   try {
-    const taskId = extractTaskId(input.url);
+    const taskId = resolveId(input.url, "tasks");
 
     if (!taskId) {
       return {
@@ -66,7 +52,7 @@ export async function handleGetTask(
             output += "\n";
           });
         }
-      } catch (error) {
+      } catch {
         output += `\n_Note: Could not fetch subtasks_\n\n`;
       }
     }
@@ -83,7 +69,7 @@ export async function handleGetTask(
           });
           output += "\n";
         }
-      } catch (error) {
+      } catch {
         output += `\n_Note: Could not fetch todos_\n\n`;
       }
     }
@@ -99,7 +85,7 @@ export async function handleGetTask(
             output += `${comment.attributes.content}\n\n`;
           });
         }
-      } catch (error) {
+      } catch {
         output += `\n_Note: Could not fetch comments_\n\n`;
       }
     }

@@ -3,9 +3,9 @@
  * Retrieves a single task from Productive.io by URL
  */
 
-import { BaseTool } from "../base/BaseTool.js";
-import { ProductiveApiClient } from "../../services/ProductiveApiClient.js";
-import { ToolResponse } from "../../types/tool.types.js";
+import { BaseTool } from "../../base/BaseTool.js";
+import { ProductiveApiClient } from "../../../services/ProductiveApiClient.js";
+import { ToolResponse } from "../../../types/tool.types.js";
 import { GetTaskSchema, GetTaskInput } from "./schema.js";
 import { handleGetTask } from "./handler.js";
 

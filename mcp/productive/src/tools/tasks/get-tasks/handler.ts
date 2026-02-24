@@ -2,9 +2,9 @@
  * Get Tasks Tool Handler
  */
 
-import { ProductiveApiClient } from "../../services/ProductiveApiClient.js";
-import { ToolResponse } from "../../types/tool.types.js";
-import { ProductiveTask, TaskFilters } from "../../types/productive.types.js";
+import { ProductiveApiClient } from "../../../services/ProductiveApiClient.js";
+import { ToolResponse } from "../../../types/tool.types.js";
+import { ProductiveTask, TaskFilters } from "../../../types/productive.types.js";
 
 async function formatTask(
   task: ProductiveTask,
@@ -18,7 +18,7 @@ async function formatTask(
     try {
       const project = await apiClient.getProject(task.relationships.project.data.id);
       projectName = project.attributes.name;
-    } catch (error) {
+    } catch {
       projectName = `Error fetching project (ID: ${task.relationships.project.data.id})`;
     }
   }
@@ -28,7 +28,7 @@ async function formatTask(
     try {
       const taskList = await apiClient.getTaskList(task.relationships.task_list.data.id);
       taskListName = taskList.attributes.name;
-    } catch (error) {
+    } catch {
       taskListName = `Error fetching task list (ID: ${task.relationships.task_list.data.id})`;
     }
   }
@@ -93,7 +93,7 @@ export async function handleGetTasks(
             try {
               const project = await apiClient.getProject(task.relationships.project.data.id);
               projectName = project.attributes.name;
-            } catch (error) {
+            } catch {
               projectName = `Error fetching project (ID: ${task.relationships.project.data.id})`;
             }
           }
@@ -102,7 +102,7 @@ export async function handleGetTasks(
             try {
               const taskList = await apiClient.getTaskList(task.relationships.task_list.data.id);
               taskListName = taskList.attributes.name;
-            } catch (error) {
+            } catch {
               taskListName = `Error fetching task list (ID: ${task.relationships.task_list.data.id})`;
             }
           }
