@@ -10,6 +10,12 @@ import { boardTools } from "./boards/index.js";
 import { peopleTools } from "./people/index.js";
 import { companyTools } from "./companies/index.js";
 import { activityTools } from "./activities/index.js";
+import { timeEntryTools } from "./time-entries/index.js";
+import { bookingTools } from "./bookings/index.js";
+import { dealTools } from "./deals/index.js";
+import { invoiceTools } from "./invoices/index.js";
+import { serviceTools } from "./services/index.js";
+import { expenseTools } from "./expenses/index.js";
 
 /**
  * Get all available tools from all groups
@@ -23,6 +29,12 @@ export function getAllTools(): Tool[] {
     ...peopleTools,
     ...companyTools,
     ...activityTools,
+    ...timeEntryTools,
+    ...bookingTools,
+    ...dealTools,
+    ...invoiceTools,
+    ...serviceTools,
+    ...expenseTools,
   ];
 }
 

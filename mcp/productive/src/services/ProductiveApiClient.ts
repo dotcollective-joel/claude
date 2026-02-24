@@ -28,6 +28,12 @@ import type { ProjectFilters, ProductiveBoard, BoardFilters } from "../types/pro
 import type { ProductivePerson, PeopleFilters } from "../types/person.types.js";
 import type { ProductiveCompany, CompanyFilters } from "../types/company.types.js";
 import type { ProductiveActivity, ActivityFilters } from "../types/activity.types.js";
+import type { ProductiveTimeEntry, TimeEntryFilters } from "../types/time-entry.types.js";
+import type { ProductiveBooking, BookingFilters } from "../types/booking.types.js";
+import type { ProductiveDeal, DealFilters } from "../types/deal.types.js";
+import type { ProductiveInvoice, InvoiceFilters } from "../types/invoice.types.js";
+import type { ProductiveService, ServiceFilters } from "../types/service.types.js";
+import type { ProductiveExpense, ExpenseFilters } from "../types/expense.types.js";
 
 const DEFAULT_PAGE_SIZE = 200;
 const MAX_PAGES = 10;
@@ -388,6 +394,163 @@ export class ProductiveApiClient {
     ]);
     params["include"] = "person";
     return this.requestPaginated<ProductiveActivity>("/activities", params);
+  }
+
+  // ─── Time Entry Methods ─────────────────────────────────────────────
+
+  /**
+   * Get a time entry by ID
+   */
+  async getTimeEntry(timeEntryId: string): Promise<ProductiveTimeEntry> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTimeEntry>>(
+      `/time_entries/${timeEntryId}`,
+      { params: { include: "person,service,task" } }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get time entries with optional filters
+   */
+  async getTimeEntries(filters?: TimeEntryFilters): Promise<PaginatedResult<ProductiveTimeEntry>> {
+    const params = this.buildFilterParams(filters, [
+      "person_id", "project_id", "service_id", "task_id", "deal_id",
+      "company_id", "after", "before", "status", "invoiced",
+      "billing_type_id", "approved_at",
+    ]);
+    params["include"] = "person,service,task";
+    return this.requestPaginated<ProductiveTimeEntry>("/time_entries", params);
+  }
+
+  /**
+   * Create a time entry
+   */
+  async createTimeEntry(body: Record<string, unknown>): Promise<ProductiveTimeEntry> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTimeEntry>>(
+      "/time_entries",
+      { method: "POST", body }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a time entry
+   */
+  async updateTimeEntry(timeEntryId: string, body: Record<string, unknown>): Promise<ProductiveTimeEntry> {
+    const response = await this.request<ProductiveApiResponse<ProductiveTimeEntry>>(
+      `/time_entries/${timeEntryId}`,
+      { method: "PATCH", body }
+    );
+    return response.data;
+  }
+
+  // ─── Booking Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get bookings with optional filters
+   */
+  async getBookings(filters?: BookingFilters): Promise<PaginatedResult<ProductiveBooking>> {
+    const params = this.buildFilterParams(filters, [
+      "person_id", "project_id", "company_id", "budget_id",
+      "after", "before", "approval_status", "person_type",
+      "booking_type", "draft", "canceled",
+    ]);
+    params["include"] = "person,service";
+    return this.requestPaginated<ProductiveBooking>("/bookings", params);
+  }
+
+  // ─── Deal Methods ─────────────────────────────────────────────────────
+
+  /**
+   * Get a deal by ID
+   */
+  async getDeal(dealId: string): Promise<ProductiveDeal> {
+    const response = await this.request<ProductiveApiResponse<ProductiveDeal>>(
+      `/deals/${dealId}`,
+      { params: { include: "company,responsible,project" } }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get deals with optional filters
+   */
+  async getDeals(filters?: DealFilters): Promise<PaginatedResult<ProductiveDeal>> {
+    const params = this.buildFilterParams(filters, [
+      "company_id", "responsible_id", "project_id", "status_id",
+      "budget_status", "deal_type_id", "query", "tags",
+      "recurring", "pipeline_id",
+    ]);
+    params["include"] = "company,responsible";
+    return this.requestPaginated<ProductiveDeal>("/deals", params);
+  }
+
+  // ─── Invoice Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get an invoice by ID
+   */
+  async getInvoice(invoiceId: string): Promise<ProductiveInvoice> {
+    const response = await this.request<ProductiveApiResponse<ProductiveInvoice>>(
+      `/invoices/${invoiceId}`,
+      { params: { include: "company,creator,responsible" } }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get invoices with optional filters
+   */
+  async getInvoices(filters?: InvoiceFilters): Promise<PaginatedResult<ProductiveInvoice>> {
+    const params = this.buildFilterParams(filters, [
+      "company_id", "deal_id", "project_id", "creator_id",
+      "responsible_id", "invoice_state", "invoice_status",
+      "payment_status", "sent_status", "currency",
+      "invoiced_on_after", "invoiced_on_before", "query",
+    ]);
+    params["include"] = "company";
+    return this.requestPaginated<ProductiveInvoice>("/invoices", params);
+  }
+
+  // ─── Service Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get a service by ID
+   */
+  async getService(serviceId: string): Promise<ProductiveService> {
+    const response = await this.request<ProductiveApiResponse<ProductiveService>>(
+      `/services/${serviceId}`,
+      { params: { include: "deal,service_type" } }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get services with optional filters
+   */
+  async getServices(filters?: ServiceFilters): Promise<PaginatedResult<ProductiveService>> {
+    const params = this.buildFilterParams(filters, [
+      "deal_id", "project_id", "person_id", "name",
+      "billing_type", "unit", "budget_status",
+      "time_tracking_enabled",
+    ]);
+    params["include"] = "deal,service_type";
+    return this.requestPaginated<ProductiveService>("/services", params);
+  }
+
+  // ─── Expense Methods ──────────────────────────────────────────────────
+
+  /**
+   * Get expenses with optional filters
+   */
+  async getExpenses(filters?: ExpenseFilters): Promise<PaginatedResult<ProductiveExpense>> {
+    const params = this.buildFilterParams(filters, [
+      "service_id", "person_id", "company_id", "project_id",
+      "date_after", "date_before", "status", "invoiced",
+      "approval_status", "query",
+    ]);
+    params["include"] = "person,service";
+    return this.requestPaginated<ProductiveExpense>("/expenses", params);
   }
 
   // ─── Private Helpers ──────────────────────────────────────────────────
